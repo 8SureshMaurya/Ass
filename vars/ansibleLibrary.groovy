@@ -12,7 +12,7 @@ def call(Map params = [:]) {
         agent any
         
         environment {
-            SLACK_CHANNEL_NAME  = "${cfg.jenkins}"
+            SLACK_CHANNEL_NAME  = "${cfg.SLACK_CHANNEL_NAME}"
             ENVIRONMENT         = "${cfg.ENVIRONMENT}"
             CODE_BASE_PATH      = "${cfg.CODE_BASE_PATH}"
             ACTION_MESSAGE      = "${cfg.ACTION_MESSAGE}"
@@ -51,7 +51,7 @@ def call(Map params = [:]) {
             stage('Notification') {
                 steps {
                     script {
-                        slackSend(channel: env.jenkins, message: env.ACTION_MESSAGE)
+                        slackSend(channel: env.SLACK_CHANNEL_NAME, message: env.ACTION_MESSAGE)
                     }
                 }
             }
