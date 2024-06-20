@@ -1,18 +1,22 @@
-def call(Map params) {
+// vars/ansiblePipeline.groovy
+
+def call(Map params = [:]) {
     def config = readYaml text: libraryResource('config.groovy')
-    
+    def cfg = [:]
+
     // Override config with provided params if present
-    config << params
+    cfg.putAll(config)
+    cfg.putAll(params)
     
     pipeline {
         agent any
         
         environment {
-            SLACK_CHANNEL_NAME  = config.jenkins
-            ENVIRONMENT         = config.ENVIRONMENT
-            CODE_BASE_PATH      = config.CODE_BASE_PATH
-            ACTION_MESSAGE      = config.ACTION_MESSAGE
-            KEEP_APPROVAL_STAGE = config.KEEP_APPROVAL_STAGE.toString()
+            SLACK_CHANNEL_NAME  = "${cfg.jenkins}"
+            ENVIRONMENT         = "${cfg.ENVIRONMENT}"
+            CODE_BASE_PATH      = "${cfg.CODE_BASE_PATH}"
+            ACTION_MESSAGE      = "${cfg.ACTION_MESSAGE}"
+            KEEP_APPROVAL_STAGE = "${cfg.KEEP_APPROVAL_STAGE}"
         }
         
         stages {
@@ -47,7 +51,7 @@ def call(Map params) {
             stage('Notification') {
                 steps {
                     script {
-                        slackSend(channel: env.SLACK_CHANNEL_NAME, message: env.ACTION_MESSAGE)
+                        slackSend(channel: env.jenkins, message: env.ACTION_MESSAGE)
                     }
                 }
             }
