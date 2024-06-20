@@ -8,7 +8,7 @@ def call(Map params) {
         agent any
         
         environment {
-            SLACK_CHANNEL_NAME  = config.SLACK_CHANNEL_NAME
+            SLACK_CHANNEL_NAME  = config.jenkins
             ENVIRONMENT         = config.ENVIRONMENT
             CODE_BASE_PATH      = config.CODE_BASE_PATH
             ACTION_MESSAGE      = config.ACTION_MESSAGE
